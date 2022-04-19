@@ -1,0 +1,40 @@
+doctrine:
+    dbal:
+        default_connection: default
+        connections:
+            default:
+                # configure these for your database server
+                url: '%env(resolve:DATABASE_URL)%'
+            plesk:
+                # configure these for your database server
+                url: '%env(resolve:DATABASE_URL_PLESK)%'
+                schema_filter: ~^(dns_|sys_|domains|clients|hosting)~
+                charset: utf8
+                default_table_options:
+                    charset: utf8
+                    collate: utf8_general_ci
+                mapping_types:
+                    enum: string
+
+    orm:
+        default_entity_manager: default
+        auto_generate_proxy_classes: true
+        entity_managers:
+            default:
+                connection: default
+                mappings:
+                    App:
+                        is_bundle: false
+                        type: annotation
+                        dir: '%kernel.project_dir%/src/Entity/Internal'
+                        prefix: 'App\Entity\Internal'
+                        alias: App
+            plesk:
+                connection: plesk
+                mappings:
+                    Plesk:
+                        is_bundle: false
+                        type: annotation
+                        dir: '%kernel.project_dir%/src/Entity/Plesk'
+                        prefix: 'App\Entity\Plesk'
+                        alias: Plesk
